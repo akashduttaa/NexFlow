@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    environment:
+      POSTGRES_DB: nexflow
+      POSTGRES_USER: nexflow
+      POSTGRES_PASSWORD: changeme
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  osrm:
+    image: osrm/osrm-backend:v5.24.0
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./infra/osrm/data:/data
+    command: osrm-routed --algorithm mld /data/india-latest.osm.pbf
+    # Build step: docker run --rm -v $(pwd)/infra/osrm/data:/data osrm/osrm-backend:v5.24.0 osrm-extract -p /data/car.lua /data/india-latest.osm.pbf
+    #              docker run --rm -v $(pwd)/infra/osrm/data:/data osrm/osrm-backend:v5.24.0 osrm-partition /data/india-latest.osrm
+    #              docker run --rm -v $(pwd)/infra/osrm/data:/data osrm/osrm-backend:v5.24.0 osrm-customize /data/india-latest.osrm
+
+  api:
+    build:
+      context: ./services/api
+    ports:
+      - "3001:3001"
+    environment:
+      - DATABASE_URL=postgresql://nexflow:changeme@postgres:5432/nexflow
+      - REDIS_URL=redis://redis:6379
+      - OSRM_BASE_URL=http://osrm:5000
+      - AI_SERVICE_URL=http://ai:8000
+      - OPTIMIZER_URL=http://optimizer:8001
+      - JWT_SECRET=change-this-in-production
+      - CORS_ORIGINS=http://localhost:5173
+      - DEMO_MODE=true
+    depends_on:
+      - postgres
+      - redis
+
+  ai:
+    build:
+      context: ./services/ai
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=/app/models
+
+  optimizer:
+    build:
+      context: ./services/optimizer
+    ports:
+      - "8001:8001"
+    environment:
+      - SOLVER=cp-sat
+
+  web:
+    build:
+      context: ./apps/web
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
