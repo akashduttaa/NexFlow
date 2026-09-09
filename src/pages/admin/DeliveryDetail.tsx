@@ -28,18 +28,18 @@ export default function DeliveryDetail() {
 
   return (
     <div className="space-y-6">
-      <Link to="/dashboard/deliveries" className="flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700">
+      <Link to="/dashboard/deliveries" className="flex items-center gap-1 text-sm text-primary-400 hover:text-primary-300">
         <ArrowLeft className="w-4 h-4" /> Back to Deliveries
       </Link>
 
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center">
-            <Package className="w-6 h-6 text-primary-600" />
+          <div className="w-12 h-12 rounded-lg bg-primary-500/15 flex items-center justify-center">
+            <Package className="w-6 h-6 text-primary-400" />
           </div>
           <div>
             <h1 className="page-title">Delivery {delivery.id}</h1>
-            <p className="text-sm text-ink-500">{delivery.destination}</p>
+            <p className="text-sm text-ink-400">{delivery.destination}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -78,11 +78,11 @@ export default function DeliveryDetail() {
       {vehicle && (
         <Card className="p-4">
           <h2 className="section-title mb-3">Assigned Vehicle</h2>
-          <Link to={`/dashboard/fleet/${vehicle.id}`} className="flex items-center gap-3 p-3 rounded-lg bg-primary-50 border border-primary-200 hover:bg-primary-100 transition-colors">
-            <Truck className="w-5 h-5 text-primary-600" />
+          <Link to={`/dashboard/fleet/${vehicle.id}`} className="flex items-center gap-3 p-3 rounded-lg bg-primary-500/10 border border-primary-500/20 hover:bg-primary-500/15 transition-colors">
+            <Truck className="w-5 h-5 text-primary-400" />
             <div className="flex-1">
-              <p className="text-sm font-medium text-primary-700">{vehicle.vehicleNo}</p>
-              <p className="text-xs text-ink-500">{vehicle.driverName} — {vehicle.type}</p>
+              <p className="text-sm font-medium text-primary-300">{vehicle.vehicleNo}</p>
+              <p className="text-xs text-ink-400">{vehicle.driverName} — {vehicle.type}</p>
             </div>
             <StatusBadge status={vehicle.status} />
           </Link>
@@ -95,8 +95,8 @@ export default function DeliveryDetail() {
 function Row({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="flex items-center gap-2 text-ink-500">{icon} {label}</span>
-      <span className="text-ink-800 font-medium">{value}</span>
+      <span className="flex items-center gap-2 text-ink-400">{icon} {label}</span>
+      <span className="text-ink-100 font-medium">{value}</span>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { PublicLayout } from '@/layouts/PublicLayout';
 import { AdminLayout } from '@/layouts/AdminLayout';
@@ -33,6 +33,8 @@ import DataSources from '@/pages/admin/DataSources';
 import SystemHealth from '@/pages/admin/SystemHealth';
 import AuditLog from '@/pages/admin/AuditLog';
 import Settings from '@/pages/admin/Settings';
+
+import MqttTelemetry from '@/pages/admin/MqttTelemetry';
 
 // Driver pages
 import DriverHome from '@/pages/driver/DriverHome';
@@ -79,6 +81,7 @@ function AppRoutes() {
         <Route path="architecture" element={<ArchitecturePage />} />
         <Route path="iccc-integration" element={<IcccIntegration />} />
         <Route path="ulip-adapter" element={<UlipAdapter />} />
+        <Route path="mqtt" element={<MqttTelemetry />} />
         <Route path="data-sources" element={<DataSources />} />
         <Route path="system-health" element={<SystemHealth />} />
         <Route path="audit" element={<AuditLog />} />
@@ -100,12 +103,19 @@ function AppRoutes() {
   );
 }
 
+import { ThemeProvider } from '@/contexts/ThemeContext';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+
 export default function App() {
   return (
-    <AuthProvider>
-      <HashRouter>
-        <AppRoutes />
-      </HashRouter>
-    </AuthProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }

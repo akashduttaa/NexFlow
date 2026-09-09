@@ -34,17 +34,17 @@ export default function DriverSync() {
 
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
-      <h1 className="text-xl font-bold text-ink-900">Synchronization</h1>
+      <h1 className="text-xl font-bold text-white">Synchronization</h1>
 
       {/* Sync Status */}
       <Card className="p-5">
         <div className="flex items-center gap-3 mb-4">
           <div className={`w-12 h-12 rounded-full flex items-center justify-center ${syncing ? 'bg-warning-100' : 'bg-success-100'}`}>
-            {syncing ? <RefreshCw className="w-6 h-6 text-warning-600 animate-spin" /> : <CheckCircle className="w-6 h-6 text-success-600" />}
+            {syncing ? <RefreshCw className="w-6 h-6 text-warning-400 animate-spin" /> : <CheckCircle className="w-6 h-6 text-success-400" />}
           </div>
           <div>
-            <p className="text-sm font-semibold text-ink-900">{syncing ? 'SYNCING...' : 'Ready to Sync'}</p>
-            <p className="text-xs text-ink-500">{pending.length} pending GPS events</p>
+            <p className="text-sm font-semibold text-white">{syncing ? 'SYNCING...' : 'Ready to Sync'}</p>
+            <p className="text-xs text-ink-400">{pending.length} pending GPS events</p>
           </div>
         </div>
 
@@ -54,8 +54,8 @@ export default function DriverSync() {
         </button>
 
         {syncedCount > 0 && !syncing && (
-          <div className="mt-3 p-3 rounded-lg bg-success-50 border border-success-200 flex items-center gap-2">
-            <CheckCircle className="w-4 h-4 text-success-600" />
+          <div className="mt-3 p-3 rounded-lg bg-success-500/10 border border-success-500/20 flex items-center gap-2">
+            <CheckCircle className="w-4 h-4 text-success-400" />
             <p className="text-xs text-success-700">Synced {syncedCount} events successfully.</p>
           </div>
         )}
@@ -64,17 +64,17 @@ export default function DriverSync() {
       {/* Last Sync */}
       <Card className="p-5">
         <div className="flex items-center gap-2 mb-3">
-          <Clock className="w-5 h-5 text-ink-600" />
+          <Clock className="w-5 h-5 text-ink-300" />
           <h2 className="section-title">Sync History</h2>
         </div>
         <div className="space-y-2 text-sm">
-          <div className="flex items-center justify-between p-2 rounded-lg bg-ink-50">
-            <span className="text-ink-500">Last Sync Time</span>
-            <span className="text-ink-800">{lastSync ? new Date(lastSync).toLocaleString('en-IN') : 'Never'}</span>
+          <div className="flex items-center justify-between p-2 rounded-lg bg-surface">
+            <span className="text-ink-400">Last Sync Time</span>
+            <span className="text-ink-100">{lastSync ? new Date(lastSync).toLocaleString('en-IN') : 'Never'}</span>
           </div>
-          <div className="flex items-center justify-between p-2 rounded-lg bg-ink-50">
-            <span className="text-ink-500">Pending Events</span>
-            <span className="text-ink-800">{pending.length}</span>
+          <div className="flex items-center justify-between p-2 rounded-lg bg-surface">
+            <span className="text-ink-400">Pending Events</span>
+            <span className="text-ink-100">{pending.length}</span>
           </div>
         </div>
       </Card>
@@ -85,32 +85,32 @@ export default function DriverSync() {
         {pending.length > 0 ? (
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {pending.map(e => (
-              <div key={e.id} className="flex items-center justify-between p-2 rounded-lg bg-warning-50 border border-warning-200 text-xs">
+              <div key={e.id} className="flex items-center justify-between p-2 rounded-lg bg-warning-500/10 border border-warning-500/20 text-xs">
                 <div>
-                  <p className="text-ink-600">{new Date(e.timestamp).toLocaleTimeString('en-IN')}</p>
-                  <p className="text-ink-800 font-mono">{e.location.lat.toFixed(4)}, {e.location.lon.toFixed(4)}</p>
+                  <p className="text-ink-300">{new Date(e.timestamp).toLocaleTimeString('en-IN')}</p>
+                  <p className="text-ink-100 font-mono">{e.location.lat.toFixed(4)}, {e.location.lon.toFixed(4)}</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-ink-500">{e.speedKph} km/h</span>
+                  <span className="text-ink-400">{e.speedKph} km/h</span>
                   <Badge variant="warning">Queued</Badge>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="flex items-center gap-2 p-3 rounded-lg bg-success-50 border border-success-200">
-            <CheckCircle className="w-4 h-4 text-success-600" />
+          <div className="flex items-center gap-2 p-3 rounded-lg bg-success-500/10 border border-success-500/20">
+            <CheckCircle className="w-4 h-4 text-success-400" />
             <p className="text-xs text-success-700">All events synced. No pending data.</p>
           </div>
         )}
       </Card>
 
       {/* Sync Flow */}
-      <Card className="p-4 bg-ink-50 border-ink-200">
+      <Card className="p-4 bg-surface border-surface-border">
         <div className="flex items-start gap-2">
-          <AlertCircle className="w-4 h-4 text-ink-500 mt-0.5 shrink-0" />
-          <div className="text-xs text-ink-500">
-            <p className="font-medium text-ink-600 mb-1">Offline Sync Flow:</p>
+          <AlertCircle className="w-4 h-4 text-ink-400 mt-0.5 shrink-0" />
+          <div className="text-xs text-ink-400">
+            <p className="font-medium text-ink-300 mb-1">Offline Sync Flow:</p>
             <p>Network lost → OFFLINE MODE → use cached route → queue GPS → continue operation → retry → synchronize → reconcile latest route</p>
             <p className="mt-1">Route versions prevent stale-route overwrite.</p>
           </div>

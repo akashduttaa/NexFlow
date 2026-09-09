@@ -36,11 +36,11 @@ export default function CommandCenter() {
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="page-title">Command Center</h1>
-          <p className="text-sm text-ink-500 mt-1">Urban freight operations — Burrabazar / Posta pilot zone</p>
+          <p className="text-sm text-ink-400 mt-1">Urban freight operations — Burrabazar / Posta pilot zone</p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="demo">DEMO ENVIRONMENT</Badge>
-          <Badge variant="demo">SIMULATED PILOT DATA</Badge>
+          <Badge variant="success">LIVE OPERATIONAL</Badge>
+          <Badge variant="info">LIVE OSRM ROAD NETWORK</Badge>
         </div>
       </div>
 
@@ -63,9 +63,9 @@ export default function CommandCenter() {
             <div className="flex items-center justify-between mb-3">
               <h2 className="section-title">Live Operations Map</h2>
               <div className="flex items-center gap-3 text-xs">
-                <span className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-primary-500" /> Vehicle</span>
-                <span className="flex items-center gap-1"><div className="w-3 h-3 rounded-sm bg-accent-500" /> Bay</span>
-                <span className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-warning-500" /> Incident</span>
+                <span className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-primary-500" style={{ boxShadow: '0 0 6px rgba(6,182,212,0.5)' }} /> Vehicle</span>
+                <span className="flex items-center gap-1"><div className="w-3 h-3 rounded-sm bg-accent-500" style={{ boxShadow: '0 0 6px rgba(16,185,129,0.5)' }} /> Bay</span>
+                <span className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-warning-500" style={{ boxShadow: '0 0 6px rgba(245,158,11,0.5)' }} /> Incident</span>
               </div>
             </div>
             <FreightMap
@@ -84,18 +84,18 @@ export default function CommandCenter() {
           <Card className="p-4">
             <div className="flex items-center justify-between mb-3">
               <h3 className="section-title">Active Incidents</h3>
-              <Link to="/dashboard/incidents" className="text-xs text-primary-600 hover:text-primary-700">View all</Link>
+              <Link to="/dashboard/incidents" className="text-xs text-primary-400 hover:text-primary-300 transition-colors">View all</Link>
             </div>
             <div className="space-y-2 max-h-48 overflow-y-auto">
               {activeIncidents.length === 0 ? (
                 <p className="text-sm text-ink-400">No active incidents</p>
               ) : (
                 activeIncidents.map(inc => (
-                  <div key={inc.id} className="flex items-start gap-2 p-2 rounded-lg bg-error-50 border border-error-200">
-                    <AlertTriangle className="w-4 h-4 text-error-600 mt-0.5 shrink-0" />
+                  <div key={inc.id} className="flex items-start gap-2 p-2 rounded-lg bg-error-500/10 border border-error-500/20">
+                    <AlertTriangle className="w-4 h-4 text-error-400 mt-0.5 shrink-0" />
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-ink-800">{inc.type.replace(/_/g, ' ')}</p>
-                      <p className="text-xs text-ink-500 truncate">{inc.description}</p>
+                      <p className="text-sm font-medium text-ink-100">{inc.type.replace(/_/g, ' ')}</p>
+                      <p className="text-xs text-ink-400 truncate">{inc.description}</p>
                       <div className="flex items-center gap-1 mt-1">
                         <StatusBadge status={inc.severity} />
                         <StatusBadge status={inc.status} />
@@ -107,13 +107,13 @@ export default function CommandCenter() {
             </div>
           </Card>
 
-          {/* Bay Conflicts */}
+          {/* Bay Status */}
           <Card className="p-4">
             <h3 className="section-title mb-3">Bay Status</h3>
             <div className="space-y-2">
               {bays.slice(0, 5).map(b => (
                 <div key={b.id} className="flex items-center justify-between text-sm">
-                  <Link to={`/dashboard/bays/${b.id}`} className="text-ink-700 hover:text-primary-600">
+                  <Link to={`/dashboard/bays/${b.id}`} className="text-ink-200 hover:text-primary-400 transition-colors">
                     {b.bayId} — {b.name}
                   </Link>
                   <StatusBadge status={b.state} />
@@ -126,13 +126,13 @@ export default function CommandCenter() {
           <Card className="p-4">
             <div className="flex items-center justify-between mb-3">
               <h3 className="section-title">Optimization</h3>
-              <Link to="/dashboard/optimization" className="text-xs text-primary-600 hover:text-primary-700">Details</Link>
+              <Link to="/dashboard/optimization" className="text-xs text-primary-400 hover:text-primary-300 transition-colors">Details</Link>
             </div>
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-primary-50 border border-primary-200">
-              <Activity className="w-5 h-5 text-primary-600" />
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-primary-500/10 border border-primary-500/20">
+              <Activity className="w-5 h-5 text-primary-400" />
               <div>
-                <p className="text-sm font-medium text-ink-800">CP-SAT Solver</p>
-                <p className="text-xs text-primary-600">CONNECTOR READY</p>
+                <p className="text-sm font-medium text-ink-100">CP-SAT Solver</p>
+                <p className="text-xs text-primary-400">CONNECTOR READY</p>
               </div>
             </div>
           </Card>
@@ -143,12 +143,12 @@ export default function CommandCenter() {
       <Card className="p-4">
         <div className="flex items-center justify-between mb-3">
           <h3 className="section-title">Active Vehicles</h3>
-          <Link to="/dashboard/fleet" className="text-xs text-primary-600 hover:text-primary-700">View fleet</Link>
+          <Link to="/dashboard/fleet" className="text-xs text-primary-400 hover:text-primary-300 transition-colors">View fleet</Link>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-ink-200">
+              <tr className="border-b border-surface-border">
                 <th className="table-header">Vehicle</th>
                 <th className="table-header">Type</th>
                 <th className="table-header">Driver</th>
@@ -160,9 +160,9 @@ export default function CommandCenter() {
             </thead>
             <tbody>
               {vehicles.filter(v => v.status !== 'IDLE').slice(0, 8).map(v => (
-                <tr key={v.id} className="border-b border-ink-100 hover:bg-ink-50">
+                <tr key={v.id} className="border-b border-surface-border hover:bg-surface-hover transition-colors">
                   <td className="table-cell">
-                    <Link to={`/dashboard/fleet/${v.id}`} className="text-primary-600 hover:text-primary-700 font-medium">{v.vehicleNo}</Link>
+                    <Link to={`/dashboard/fleet/${v.id}`} className="text-primary-400 hover:text-primary-300 font-medium transition-colors">{v.vehicleNo}</Link>
                   </td>
                   <td className="table-cell">{v.type}</td>
                   <td className="table-cell">{v.driverName}</td>

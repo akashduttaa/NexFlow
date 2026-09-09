@@ -20,19 +20,25 @@ export default function DriverHome() {
   useEffect(() => {
     socket.connect('driver-drv-001');
     apiClient.getVehicles().then(vs => {
-      const v = vs[0];
-      setVehicle(v);
-      if (v.assignedDeliveryId) apiClient.getDelivery(v.assignedDeliveryId).then(d => { setDelivery(d); if (d) cacheDelivery(d); });
-      if (v.assignedBayId) apiClient.getBay(v.assignedBayId).then(b => { setBay(b); if (b) cacheBay(b); });
-    });
+      if (vs && vs.length > 0) {
+        const v = vs[0];
+        setVehicle(v);
+        if (v && v.assignedDeliveryId) apiClient.getDelivery(v.assignedDeliveryId).then(d => { setDelivery(d); if (d) cacheDelivery(d); });
+        if (v && v.assignedBayId) apiClient.getBay(v.assignedBayId).then(b => { setBay(b); if (b) cacheBay(b); });
+      }
+    }).catch(console.error);
+
     apiClient.getRoutes().then(rs => {
-      const r = rs.find(rt => rt.status === 'ACTIVE');
-      setRoute(r ?? null);
-      if (r) cacheRoute(r);
-    });
-    getCachedRoute().then(setCachedRoute);
-    getCachedDelivery().then(setCachedDelivery);
-    getCachedBay().then(setCachedBay);
+      if (rs && Array.isArray(rs)) {
+        const r = rs.find(rt => rt.status === 'ACTIVE');
+        setRoute(r ?? null);
+        if (r) cacheRoute(r);
+      }
+    }).catch(console.error);
+
+    getCachedRoute().then(setCachedRoute).catch(() => {});
+    getCachedDelivery().then(setCachedDelivery).catch(() => {});
+    getCachedBay().then(setCachedBay).catch(() => {});
   }, []);
 
   const toggleConnection = () => {
@@ -46,58 +52,74 @@ export default function DriverHome() {
 
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
-      {/* Connection Status */}
-      <div className={`p-4 rounded-lg flex items-center justify-between ${online ? 'bg-success-50 border border-success-200' : 'bg-error-50 border border-error-200'}`}>
-        <div className="flex items-center gap-3">
-          {online ? <Wifi className="w-5 h-5 text-success-600" /> : <WifiOff className="w-5 h-5 text-error-600" />}
-          <div>
-            <p className="text-sm font-semibold text-ink-900">{online ? 'ONLINE' : 'OFFLINE MODE'}</p>
-            <p className="text-xs text-ink-500">{online ? 'Connected to NexFlow dispatch' : 'Using cached route data'}</p>
+      {/* Connection Status & Eco Compliance */}
+      <div className="space-y-3">
+        <div className={`p-4 rounded-lg flex items-center justify-between ${online ? 'bg-success-500/10 border border-success-500/20' : 'bg-error-500/10 border border-error-500/20'}`}>
+          <div className="flex items-center gap-3">
+            {online ? <Wifi className="w-5 h-5 text-success-400" /> : <WifiOff className="w-5 h-5 text-error-400" />}
+            <div>
+              <p className="text-sm font-semibold text-white">{online ? 'ONLINE' : 'OFFLINE MODE'}</p>
+              <p className="text-xs text-ink-400">{online ? 'Connected to NexFlow dispatch' : 'Using cached route data'}</p>
+            </div>
           </div>
+          <button onClick={toggleConnection} className="btn-secondary text-xs">
+            {online ? 'Go Offline' : 'Reconnect'}
+          </button>
         </div>
-        <button onClick={toggleConnection} className="btn-secondary text-xs">
-          {online ? 'Go Offline' : 'Reconnect'}
-        </button>
+
+        {/* Eco-Friendly & 5% Discount Callout */}
+        <div className="p-3 rounded-lg bg-gradient-to-r from-emerald-950/80 via-surface/80 to-emerald-950/80 border border-emerald-500/30 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <span className="p-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold text-xs">⚡ 5% OFF</span>
+            <div>
+              <p className="text-xs font-semibold text-emerald-300">Green Fleet Eco Incentive Active</p>
+              <p className="text-[11px] text-ink-300">5% Discount Applied • Zero Tailpipe Emissions (PUC Exempt)</p>
+            </div>
+          </div>
+          <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded border border-emerald-500/30">
+            Compliant
+          </span>
+        </div>
       </div>
 
       {/* Current Trip */}
       <Card className="p-5">
         <div className="flex items-center gap-2 mb-4">
-          <Truck className="w-5 h-5 text-primary-600" />
+          <Truck className="w-5 h-5 text-primary-400" />
           <h2 className="section-title">Current Trip</h2>
         </div>
 
         {delivery ? (
           <div className="space-y-4">
-            <div className="p-4 rounded-lg bg-primary-50 border border-primary-200">
+            <div className="p-4 rounded-lg bg-primary-500/10 border border-primary-500/20">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-primary-700">Delivery {delivery.id}</span>
+                <span className="text-sm font-semibold text-primary-300">Delivery {delivery.id}</span>
                 <StatusBadge status={delivery.status} />
               </div>
               <div className="space-y-2 text-sm">
-                <div className="flex items-center gap-2"><Package className="w-4 h-4 text-ink-400" /><span className="text-ink-600">Pickup:</span><span className="text-ink-800">{delivery.pickup}</span></div>
-                <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-ink-400" /><span className="text-ink-600">Destination:</span><span className="text-ink-800">{delivery.destination}</span></div>
-                <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-ink-400" /><span className="text-ink-600">ETA:</span><span className="text-ink-800">{delivery.eta ?? '—'}</span></div>
-                <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-ink-400" /><span className="text-ink-600">Window:</span><span className="text-ink-800">{delivery.windowStart}–{delivery.windowEnd}</span></div>
+                <div className="flex items-center gap-2"><Package className="w-4 h-4 text-ink-400" /><span className="text-ink-300">Pickup:</span><span className="text-ink-100">{delivery.pickup}</span></div>
+                <div className="flex items-center gap-2"><MapPin className="w-4 h-4 text-ink-400" /><span className="text-ink-300">Destination:</span><span className="text-ink-100">{delivery.destination}</span></div>
+                <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-ink-400" /><span className="text-ink-300">ETA:</span><span className="text-ink-100">{delivery.eta ?? '—'}</span></div>
+                <div className="flex items-center gap-2"><Clock className="w-4 h-4 text-ink-400" /><span className="text-ink-300">Window:</span><span className="text-ink-100">{delivery.windowStart}–{delivery.windowEnd}</span></div>
               </div>
             </div>
 
             {bay && (
-              <div className="p-4 rounded-lg bg-accent-50 border border-accent-200">
+              <div className="p-4 rounded-lg bg-accent-500/10 border border-accent-500/20">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-semibold text-accent-700">Loading Bay {bay.bayId}</span>
+                  <span className="text-sm font-semibold text-accent-300">Loading Bay {bay.bayId}</span>
                   <StatusBadge status={bay.state} />
                 </div>
-                <p className="text-xs text-ink-600">{bay.name}</p>
-                <p className="text-xs text-ink-500 mt-1">Service: {bay.serviceDurationMin} min</p>
+                <p className="text-xs text-ink-300">{bay.name}</p>
+                <p className="text-xs text-ink-400 mt-1">Service: {bay.serviceDurationMin} min</p>
               </div>
             )}
 
             {route && (
-              <div className="p-4 rounded-lg bg-ink-50 border border-ink-200">
+              <div className="p-4 rounded-lg bg-surface border border-surface-border">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2"><Activity className="w-4 h-4 text-ink-600" /><span className="text-sm font-medium text-ink-700">Route {route.routeId}</span></div>
-                  <span className="text-xs text-ink-500">Version v{route.routeVersion}</span>
+                  <div className="flex items-center gap-2"><Activity className="w-4 h-4 text-ink-300" /><span className="text-sm font-medium text-ink-200">Route {route.routeId}</span></div>
+                  <span className="text-xs text-ink-400">Version v{route.routeVersion}</span>
                 </div>
               </div>
             )}
@@ -118,21 +140,21 @@ export default function DriverHome() {
       {/* Offline Cache Status */}
       <Card className="p-5">
         <div className="flex items-center gap-2 mb-4">
-          <WifiOff className="w-5 h-5 text-warning-600" />
+          <WifiOff className="w-5 h-5 text-warning-400" />
           <h2 className="section-title">Offline Cache</h2>
         </div>
         <div className="space-y-2 text-sm">
-          <div className="flex items-center justify-between p-2 rounded-lg bg-ink-50">
-            <span className="text-ink-600">Cached Route</span>
-            <span className="text-ink-800">{cachedRoute ? `v${cachedRoute.routeVersion} — ${cachedRoute.routeId}` : 'Not cached'}</span>
+          <div className="flex items-center justify-between p-2 rounded-lg bg-surface">
+            <span className="text-ink-300">Cached Route</span>
+            <span className="text-ink-100">{cachedRoute ? `v${cachedRoute.routeVersion} — ${cachedRoute.routeId}` : 'Not cached'}</span>
           </div>
-          <div className="flex items-center justify-between p-2 rounded-lg bg-ink-50">
-            <span className="text-ink-600">Cached Delivery</span>
-            <span className="text-ink-800">{cachedDelivery ? cachedDelivery.id : 'Not cached'}</span>
+          <div className="flex items-center justify-between p-2 rounded-lg bg-surface">
+            <span className="text-ink-300">Cached Delivery</span>
+            <span className="text-ink-100">{cachedDelivery ? cachedDelivery.id : 'Not cached'}</span>
           </div>
-          <div className="flex items-center justify-between p-2 rounded-lg bg-ink-50">
-            <span className="text-ink-600">Cached Bay</span>
-            <span className="text-ink-800">{cachedBay ? cachedBay.bayId : 'Not cached'}</span>
+          <div className="flex items-center justify-between p-2 rounded-lg bg-surface">
+            <span className="text-ink-300">Cached Bay</span>
+            <span className="text-ink-100">{cachedBay ? cachedBay.bayId : 'Not cached'}</span>
           </div>
         </div>
         <Link to="/driver/offline" className="btn-secondary w-full mt-3 text-xs">View Offline Details</Link>
@@ -141,16 +163,16 @@ export default function DriverHome() {
       {/* Quick Links */}
       <div className="grid grid-cols-3 gap-3">
         <Link to="/driver/trip" className="card p-3 text-center hover:shadow-md transition-shadow">
-          <Navigation className="w-5 h-5 text-primary-600 mx-auto mb-1" />
-          <span className="text-xs font-medium text-ink-700">Trip</span>
+          <Navigation className="w-5 h-5 text-primary-400 mx-auto mb-1" />
+          <span className="text-xs font-medium text-ink-200">Trip</span>
         </Link>
         <Link to="/driver/route" className="card p-3 text-center hover:shadow-md transition-shadow">
-          <Activity className="w-5 h-5 text-primary-600 mx-auto mb-1" />
-          <span className="text-xs font-medium text-ink-700">Route</span>
+          <Activity className="w-5 h-5 text-primary-400 mx-auto mb-1" />
+          <span className="text-xs font-medium text-ink-200">Route</span>
         </Link>
         <Link to="/driver/sync" className="card p-3 text-center hover:shadow-md transition-shadow">
-          <RefreshCw className="w-5 h-5 text-primary-600 mx-auto mb-1" />
-          <span className="text-xs font-medium text-ink-700">Sync</span>
+          <RefreshCw className="w-5 h-5 text-primary-400 mx-auto mb-1" />
+          <span className="text-xs font-medium text-ink-200">Sync</span>
         </Link>
       </div>
     </div>

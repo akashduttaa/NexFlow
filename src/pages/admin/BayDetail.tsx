@@ -26,18 +26,18 @@ export default function BayDetail() {
 
   return (
     <div className="space-y-6">
-      <Link to="/dashboard/bays" className="flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700">
+      <Link to="/dashboard/bays" className="flex items-center gap-1 text-sm text-primary-400 hover:text-primary-300">
         <ArrowLeft className="w-4 h-4" /> Back to Loading Bays
       </Link>
 
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-lg bg-accent-100 flex items-center justify-center">
-            <MapPin className="w-6 h-6 text-accent-600" />
+            <MapPin className="w-6 h-6 text-accent-400" />
           </div>
           <div>
             <h1 className="page-title">{bay.bayId}</h1>
-            <p className="text-sm text-ink-500">{bay.name}</p>
+            <p className="text-sm text-ink-400">{bay.name}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -58,8 +58,8 @@ export default function BayDetail() {
             <Row icon={<Activity className="w-4 h-4" />} label="Current Slot" value={bay.currentSlotId ?? 'None'} />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-ink-700 mb-2">Utilization</h3>
-            <div className="w-full h-3 bg-ink-200 rounded-full overflow-hidden">
+            <h3 className="text-sm font-semibold text-ink-200 mb-2">Utilization</h3>
+            <div className="w-full h-3 bg-surface rounded-full overflow-hidden">
               <div className={`h-full rounded-full ${bay.utilizationPct > 80 ? 'bg-error-500' : bay.utilizationPct > 60 ? 'bg-warning-500' : 'bg-accent-500'}`} style={{ width: `${bay.utilizationPct}%` }} />
             </div>
           </div>
@@ -79,7 +79,7 @@ export default function BayDetail() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-ink-200">
+                <tr className="border-b border-surface-border">
                   <th className="table-header">Slot</th>
                   <th className="table-header">Delivery</th>
                   <th className="table-header">Vehicle</th>
@@ -90,7 +90,7 @@ export default function BayDetail() {
               </thead>
               <tbody>
                 {slots.map(s => (
-                  <tr key={s.id} className="border-b border-ink-100">
+                  <tr key={s.id} className="border-b border-surface-border">
                     <td className="table-cell font-medium">{s.slotId}</td>
                     <td className="table-cell">{s.deliveryId ?? '—'}</td>
                     <td className="table-cell">{s.vehicleId ?? '—'}</td>
@@ -111,8 +111,8 @@ export default function BayDetail() {
 function Row({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="flex items-center gap-2 text-ink-500">{icon} {label}</span>
-      <span className="text-ink-800 font-medium">{value}</span>
+      <span className="flex items-center gap-2 text-ink-400">{icon} {label}</span>
+      <span className="text-ink-100 font-medium">{value}</span>
     </div>
   );
 }

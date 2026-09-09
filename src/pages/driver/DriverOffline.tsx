@@ -46,16 +46,16 @@ export default function DriverOffline() {
 
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
-      <h1 className="text-xl font-bold text-ink-900">Offline Mode</h1>
+      <h1 className="text-xl font-bold text-white">Offline Mode</h1>
 
       {/* Connection toggle */}
-      <div className={`p-5 rounded-lg ${online ? 'bg-success-50 border border-success-200' : 'bg-error-50 border border-error-200'}`}>
+      <div className={`p-5 rounded-lg ${online ? 'bg-success-500/10 border border-success-500/20' : 'bg-error-500/10 border border-error-500/20'}`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {online ? <Wifi className="w-6 h-6 text-success-600" /> : <WifiOff className="w-6 h-6 text-error-600" />}
+            {online ? <Wifi className="w-6 h-6 text-success-400" /> : <WifiOff className="w-6 h-6 text-error-400" />}
             <div>
-              <p className="text-sm font-bold text-ink-900">{online ? 'ONLINE' : 'OFFLINE MODE'}</p>
-              <p className="text-xs text-ink-500">{online ? 'Connected to dispatch' : 'Operating on cached data'}</p>
+              <p className="text-sm font-bold text-white">{online ? 'ONLINE' : 'OFFLINE MODE'}</p>
+              <p className="text-xs text-ink-400">{online ? 'Connected to dispatch' : 'Operating on cached data'}</p>
             </div>
           </div>
           <button onClick={toggleOnline} className="btn-secondary text-xs">{online ? 'Simulate Offline' : 'Reconnect'}</button>
@@ -63,10 +63,10 @@ export default function DriverOffline() {
       </div>
 
       {!online && (
-        <div className="p-4 rounded-lg bg-warning-50 border border-warning-300 flex items-start gap-2">
-          <WifiOff className="w-5 h-5 text-warning-600 mt-0.5 shrink-0" />
+        <div className="p-4 rounded-lg bg-warning-500/10 border border-warning-500/30 flex items-start gap-2">
+          <WifiOff className="w-5 h-5 text-warning-400 mt-0.5 shrink-0" />
           <div className="text-sm">
-            <p className="font-semibold text-warning-800">Offline Mode Active</p>
+            <p className="font-semibold text-warning-300">Offline Mode Active</p>
             <p className="text-xs text-warning-700 mt-1">Using cached route. GPS events are being queued. Route version is protected — older routes cannot overwrite newer ones.</p>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default function DriverOffline() {
       {/* Cached Route */}
       <Card className="p-5">
         <div className="flex items-center gap-2 mb-3">
-          <Activity className="w-5 h-5 text-primary-600" />
+          <Activity className="w-5 h-5 text-primary-400" />
           <h2 className="section-title">Cached Route</h2>
         </div>
         {cachedRoute ? (
@@ -92,7 +92,7 @@ export default function DriverOffline() {
       {/* Cached Delivery */}
       <Card className="p-5">
         <div className="flex items-center gap-2 mb-3">
-          <MapPin className="w-5 h-5 text-primary-600" />
+          <MapPin className="w-5 h-5 text-primary-400" />
           <h2 className="section-title">Cached Delivery</h2>
         </div>
         {cachedDelivery ? (
@@ -107,7 +107,7 @@ export default function DriverOffline() {
       {/* Cached Bay */}
       <Card className="p-5">
         <div className="flex items-center gap-2 mb-3">
-          <MapPin className="w-5 h-5 text-accent-600" />
+          <MapPin className="w-5 h-5 text-accent-400" />
           <h2 className="section-title">Cached Bay</h2>
         </div>
         {cachedBay ? (
@@ -122,15 +122,15 @@ export default function DriverOffline() {
       {/* Pending GPS Queue */}
       <Card className="p-5">
         <div className="flex items-center gap-2 mb-3">
-          <Clock className="w-5 h-5 text-warning-600" />
+          <Clock className="w-5 h-5 text-warning-400" />
           <h2 className="section-title">Pending GPS Events</h2>
         </div>
         {pendingGps && pendingGps.length > 0 ? (
           <div className="space-y-2">
             {pendingGps.map(e => (
-              <div key={e.id} className="flex items-center justify-between p-2 rounded-lg bg-warning-50 border border-warning-200 text-xs">
-                <span className="text-ink-600">{new Date(e.timestamp).toLocaleTimeString('en-IN')}</span>
-                <span className="text-ink-800 font-mono">{e.location.lat.toFixed(4)}, {e.location.lon.toFixed(4)}</span>
+              <div key={e.id} className="flex items-center justify-between p-2 rounded-lg bg-warning-500/10 border border-warning-500/20 text-xs">
+                <span className="text-ink-300">{new Date(e.timestamp).toLocaleTimeString('en-IN')}</span>
+                <span className="text-ink-100 font-mono">{e.location.lat.toFixed(4)}, {e.location.lon.toFixed(4)}</span>
                 <Badge variant="warning">Queued</Badge>
               </div>
             ))}
@@ -141,7 +141,7 @@ export default function DriverOffline() {
       {/* Sync Info */}
       <Card className="p-5">
         <div className="flex items-center gap-2 mb-3">
-          <RefreshCw className="w-5 h-5 text-primary-600" />
+          <RefreshCw className="w-5 h-5 text-primary-400" />
           <h2 className="section-title">Sync Status</h2>
         </div>
         {syncMeta ? (
@@ -160,5 +160,5 @@ export default function DriverOffline() {
 }
 
 function Row({ label, value }: { label: string; value: string }) {
-  return <div className="flex items-center justify-between"><span className="text-ink-500">{label}</span><span className="text-ink-800 font-medium">{value}</span></div>;
+  return <div className="flex items-center justify-between"><span className="text-ink-400">{label}</span><span className="text-ink-100 font-medium">{value}</span></div>;
 }

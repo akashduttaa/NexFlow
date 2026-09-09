@@ -80,6 +80,42 @@ export const users: User[] = [
     active: true,
     createdAt: '2026-01-15T08:00:00Z',
   },
+  {
+    id: 'usr-driver-1',
+    email: 'driver@nexflow.demo',
+    name: 'Arjun Das (Driver)',
+    role: 'DRIVER',
+    organizationId: 'org-nexgen',
+    active: true,
+    createdAt: '2026-01-15T08:00:00Z',
+  },
+  {
+    id: 'usr-driver-2',
+    email: 'rohit@nexflow.demo',
+    name: 'Rohit Sharma (Driver)',
+    role: 'DRIVER',
+    organizationId: 'org-nexgen',
+    active: true,
+    createdAt: '2026-01-15T08:00:00Z',
+  },
+  {
+    id: 'usr-driver-3',
+    email: 'sukumar@nexflow.demo',
+    name: 'Sukumar Banerjee (Driver)',
+    role: 'DRIVER',
+    organizationId: 'org-nexgen',
+    active: true,
+    createdAt: '2026-01-15T08:00:00Z',
+  },
+  {
+    id: 'usr-driver-4',
+    email: 'imran@nexflow.demo',
+    name: 'Imran Khan (Driver)',
+    role: 'DRIVER',
+    organizationId: 'org-nexgen',
+    active: true,
+    createdAt: '2026-01-15T08:00:00Z',
+  },
 ];
 
 export const fleets: Fleet[] = [

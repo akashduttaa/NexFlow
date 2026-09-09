@@ -30,7 +30,7 @@ export default function Deliveries() {
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="page-title">Delivery Management</h1>
-          <p className="text-sm text-ink-500 mt-1">Create, track, and manage freight deliveries</p>
+          <p className="text-sm text-ink-400 mt-1">Create, track, and manage freight deliveries</p>
         </div>
         <button onClick={() => setShowCreate(!showCreate)} className="btn-primary">
           <Plus className="w-4 h-4" /> Create Delivery
@@ -64,7 +64,7 @@ export default function Deliveries() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-ink-200 bg-ink-50">
+              <tr className="border-b border-surface-border bg-surface">
                 <th className="table-header">ID</th>
                 <th className="table-header">Destination</th>
                 <th className="table-header">Zone</th>
@@ -79,8 +79,8 @@ export default function Deliveries() {
             </thead>
             <tbody>
               {filtered.map(d => (
-                <tr key={d.id} className="border-b border-ink-100 hover:bg-ink-50">
-                  <td className="table-cell"><Link to={`/dashboard/deliveries/${d.id}`} className="text-primary-600 hover:text-primary-700 font-medium">{d.id}</Link></td>
+                <tr key={d.id} className="border-b border-surface-border hover:bg-surface">
+                  <td className="table-cell"><Link to={`/dashboard/deliveries/${d.id}`} className="text-primary-400 hover:text-primary-300 font-medium">{d.id}</Link></td>
                   <td className="table-cell max-w-[180px] truncate">{d.destination}</td>
                   <td className="table-cell">{d.zone}</td>
                   <td className="table-cell"><StatusBadge status={d.priority} /></td>
@@ -114,24 +114,29 @@ function CreateDeliveryForm({ onClose, onCreated }: { onClose: () => void; onCre
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
-    await apiClient.createDelivery({
-      pickup: 'NexGen Distribution Hub, Howrah',
-      pickupLocation: { lat: 22.5958, lon: 88.2636 },
-      destination: destination || 'Burrabazar Wholesale Market',
-      destinationLocation: { lat: 22.5957, lon: 88.3716 },
-      zone: 'Burrabazar / Posta',
-      priority: priority as Delivery['priority'],
-      weightKg: parseInt(weightKg) || 100,
-      windowStart,
-      windowEnd,
-      serviceDurationMin: parseInt(serviceDurationMin) || 15,
-      assignedVehicleId: null,
-      assignedBayId: null,
-      eta: null,
-      status: 'PENDING',
-    });
-    setSaving(false);
-    onCreated();
+    try {
+      await apiClient.createDelivery({
+        pickup: 'NexGen Distribution Hub, Howrah',
+        pickupLocation: { lat: 22.5958, lon: 88.2636 },
+        destination: destination || 'Burrabazar Wholesale Market',
+        destinationLocation: { lat: 22.5957, lon: 88.3716 },
+        zone: 'Burrabazar / Posta',
+        priority: priority as Delivery['priority'],
+        weightKg: parseInt(weightKg) || 100,
+        windowStart,
+        windowEnd,
+        serviceDurationMin: parseInt(serviceDurationMin) || 15,
+        assignedVehicleId: null,
+        assignedBayId: null,
+        eta: null,
+        status: 'PENDING',
+      });
+      onCreated();
+    } catch (err) {
+      console.error('Create delivery error:', err);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (

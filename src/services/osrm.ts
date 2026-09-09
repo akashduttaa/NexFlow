@@ -81,4 +81,83 @@ class SimulatedOsrmService implements IOsrmService {
   }
 }
 
-export const osrmService: IOsrmService = new SimulatedOsrmService();
+class LiveOsrmService implements IOsrmService {
+  private simulated = new SimulatedOsrmService();
+
+  getName() { return 'Live OpenStreetMap OSRM'; }
+  isSimulated() { return false; }
+
+  async getRoute(origin: LatLng, destination: LatLng): Promise<OsrmRoute> {
+    try {
+      const url = `https://router.project-osrm.org/route/v1/driving/${origin.lon},${origin.lat};${destination.lon},${destination.lat}?overview=full&geometries=geojson`;
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), 1500);
+      let res: Response;
+      try {
+        res = await fetch(url, { signal: controller.signal });
+      } finally {
+        clearTimeout(id);
+      }
+      if (!res.ok) throw new Error('OSRM API request failed');
+      const data = await res.json();
+      
+      if (data.routes && data.routes.length > 0) {
+        const route = data.routes[0];
+        const coords: [number, number][] = route.geometry.coordinates;
+        const geometry: LatLng[] = coords.map(([lon, lat]) => ({ lat, lon }));
+        return {
+          geometry,
+          distanceKm: Math.round((route.distance / 1000) * 10) / 10,
+          durationMin: Math.round(route.duration / 60)
+        };
+      }
+      return this.simulated.getRoute(origin, destination);
+    } catch (e) {
+      console.warn('Live OSRM offline or rate limited, falling back to local routing geometry:', e);
+      return this.simulated.getRoute(origin, destination);
+    }
+  }
+
+  async getRouteCandidates(origin: LatLng, destination: LatLng, count: number): Promise<OsrmRoute[]> {
+    try {
+      const url = `https://router.project-osrm.org/route/v1/driving/${origin.lon},${origin.lat};${destination.lon},${destination.lat}?alternatives=true&overview=full&geometries=geojson`;
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), 1500);
+      let res: Response;
+      try {
+        res = await fetch(url, { signal: controller.signal });
+      } finally {
+        clearTimeout(id);
+      }
+      if (!res.ok) throw new Error('OSRM Candidates request failed');
+      const data = await res.json();
+      
+      if (data.routes && data.routes.length > 0) {
+        return data.routes.slice(0, count).map((route: any) => {
+          const coords: [number, number][] = route.geometry.coordinates;
+          return {
+            geometry: coords.map(([lon, lat]) => ({ lat, lon })),
+            distanceKm: Math.round((route.distance / 1000) * 10) / 10,
+            durationMin: Math.round(route.duration / 60)
+          };
+        });
+      }
+      return this.simulated.getRouteCandidates(origin, destination, count);
+    } catch (e) {
+      return this.simulated.getRouteCandidates(origin, destination, count);
+    }
+  }
+
+  async getTravelTimeMatrix(origins: LatLng[], destinations: LatLng[]): Promise<number[][]> {
+    return this.simulated.getTravelTimeMatrix(origins, destinations);
+  }
+
+  async mapMatch(gpsTrace: LatLng[]): Promise<LatLng[]> {
+    return this.simulated.mapMatch(gpsTrace);
+  }
+}
+
+export const simulatedOsrmService: IOsrmService = new SimulatedOsrmService();
+export const liveOsrmService: IOsrmService = new LiveOsrmService();
+export const osrmService: IOsrmService = liveOsrmService;
+

@@ -37,15 +37,16 @@ const docs = [
 
 export default function Documentation() {
   return (
-    <div className="bg-white">
+    <div className="bg-ink-950">
       {/* Header */}
-      <section className="py-16 lg:py-20 bg-gradient-to-br from-ink-50 to-primary-50 border-b border-ink-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 lg:py-20 border-b border-surface-border relative overflow-hidden">
+        <div className="absolute inset-0 animated-mesh-bg opacity-50" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Badge variant="info">Documentation</Badge>
-          <h1 className="mt-4 text-4xl lg:text-5xl font-bold text-ink-900 tracking-tight">
-            Documentation Index
+          <h1 className="mt-4 text-4xl lg:text-5xl font-bold tracking-tight">
+            <span className="gradient-text">Documentation Index</span>
           </h1>
-          <p className="mt-4 text-xl text-ink-600 max-w-3xl">
+          <p className="mt-4 text-xl text-ink-300 max-w-3xl">
             Complete documentation covering architecture, data, optimization, integration, operations, and research.
           </p>
         </div>
@@ -58,14 +59,14 @@ export default function Documentation() {
             {docs.map((doc) => (
               <Card key={doc.title} hover className="p-6 group cursor-pointer">
                 <div className="flex items-start gap-4">
-                  <div className="w-11 h-11 rounded-lg bg-primary-50 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-100 transition-colors">
-                    <doc.icon className="w-6 h-6 text-primary-600" />
+                  <div className="w-11 h-11 rounded-lg bg-primary-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary-500/20 transition-colors duration-300">
+                    <doc.icon className="w-6 h-6 text-primary-400 group-hover:text-primary-300 transition-colors" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2 mb-1">
-                      <h3 className="text-base font-semibold text-ink-900 truncate">{doc.title}</h3>
+                      <h3 className="text-base font-semibold text-white truncate">{doc.title}</h3>
                     </div>
-                    <p className="text-sm text-ink-500 leading-relaxed mb-3">{doc.desc}</p>
+                    <p className="text-sm text-ink-400 leading-relaxed mb-3">{doc.desc}</p>
                     <Badge variant="neutral">{doc.tag}</Badge>
                   </div>
                 </div>
@@ -76,16 +77,16 @@ export default function Documentation() {
       </section>
 
       {/* Resource Banner */}
-      <section className="py-16 lg:py-20 bg-ink-50 border-y border-ink-200">
+      <section className="py-16 lg:py-20 border-y border-surface-border" style={{ background: 'linear-gradient(180deg, rgba(15,23,41,0.5) 0%, rgba(10,14,26,0.8) 100%)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Card className="p-8 lg:p-10">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-lg bg-accent-50 flex items-center justify-center flex-shrink-0">
-                <BookOpen className="w-6 h-6 text-accent-600" />
+              <div className="w-12 h-12 rounded-lg bg-accent-500/10 flex items-center justify-center flex-shrink-0">
+                <BookOpen className="w-6 h-6 text-accent-400" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-ink-900">All demo data is simulated</h2>
-                <p className="mt-2 text-ink-600 leading-relaxed">
+                <h2 className="text-xl font-bold text-white">All demo data is simulated</h2>
+                <p className="mt-2 text-ink-300 leading-relaxed">
                   Every data point shown in the NexFlow demo is simulated for demonstration purposes. Data provenance is tracked and surfaced throughout the platform — each record carries a provenance badge (DEMO DATA, OPEN DATA, LIVE EXTERNAL, or OPERATOR FEED).
                 </p>
                 <div className="mt-4 flex flex-wrap gap-3">

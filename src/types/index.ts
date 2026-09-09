@@ -97,7 +97,7 @@ export interface Vehicle {
   routeVersion: number;
   lastHeartbeat: string;
   connectionStatus: ConnectionStatus;
-}
+export type FuelType = 'EV' | 'DIESEL' | 'PETROL' | 'CNG';
 
 export interface Driver {
   id: string;
@@ -106,6 +106,10 @@ export interface Driver {
   vehicleId: string | null;
   fleetId: string;
   licenseNo: string;
+  fuelType?: FuelType;
+  pucCertificateNo?: string;
+  isPucValid?: boolean;
+  ecoDiscountPct?: number;
   connectionStatus: ConnectionStatus;
   lastHeartbeat: string;
   active: boolean;

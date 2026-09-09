@@ -1,0 +1,27 @@
+{
+  "status": "LIVE TRAINED / ONLINE",
+  "version": "1.0.0-live",
+  "district": "Kolkata Burrabazar / Posta Trade District",
+  "trainedAt": "2026-09-09T15:14:11Z",
+  "trainingDurationMs": 937,
+  "sampleCount": 1500,
+  "metrics": {
+    "demand": {
+      "rmse": 3.083,
+      "r2": 0.988
+    },
+    "traffic": {
+      "rmse": 4.508,
+      "r2": 0.953
+    }
+  },
+  "feature_importance": {
+    "hour": 0.03750000149011612,
+    "weekday": 0.0013000000035390258,
+    "orders_last_15m": 0.9200999736785889,
+    "orders_last_1h": 0.00419999985024333,
+    "rainfall": 0.03370000049471855,
+    "temperature": 0.0017999999690800905,
+    "active_vehicles": 0.00139999995008111
+  }
+}

@@ -11,66 +11,93 @@ type StoreName = typeof STORES[number];
 
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onupgradeneeded = () => {
-      const db = req.result;
-      STORES.forEach(s => {
-        if (!db.objectStoreNames.contains(s)) db.createObjectStore(s, { keyPath: 'id' });
-      });
-    };
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
+    try {
+      if (typeof indexedDB === 'undefined') {
+        return reject(new Error('IndexedDB is not available in this environment'));
+      }
+      const req = indexedDB.open(DB_NAME, DB_VERSION);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        STORES.forEach(s => {
+          if (!db.objectStoreNames.contains(s)) db.createObjectStore(s, { keyPath: 'id' });
+        });
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 
 async function get<T>(store: StoreName, key: string): Promise<T | null> {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readonly');
-    const req = tx.objectStore(store).get(key);
-    req.onsuccess = () => resolve(req.result ?? null);
-    req.onerror = () => reject(req.error);
-  });
+  try {
+    const db = await openDB();
+    return new Promise((resolve) => {
+      const tx = db.transaction(store, 'readonly');
+      const req = tx.objectStore(store).get(key);
+      req.onsuccess = () => resolve(req.result ?? null);
+      req.onerror = () => resolve(null);
+    });
+  } catch {
+    return null;
+  }
 }
 
 async function put<T extends { id: string }>(store: StoreName, value: T): Promise<void> {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readwrite');
-    tx.objectStore(store).put(value);
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-  });
+  try {
+    const db = await openDB();
+    return new Promise((resolve) => {
+      const tx = db.transaction(store, 'readwrite');
+      tx.objectStore(store).put(value);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => resolve();
+    });
+  } catch {
+    // fail-safe
+  }
 }
 
 async function getAll<T>(store: StoreName): Promise<T[]> {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readonly');
-    const req = tx.objectStore(store).getAll();
-    req.onsuccess = () => resolve(req.result ?? []);
-    req.onerror = () => reject(req.error);
-  });
+  try {
+    const db = await openDB();
+    return new Promise((resolve) => {
+      const tx = db.transaction(store, 'readonly');
+      const req = tx.objectStore(store).getAll();
+      req.onsuccess = () => resolve(req.result ?? []);
+      req.onerror = () => resolve([]);
+    });
+  } catch {
+    return [];
+  }
 }
 
 async function del(store: StoreName, key: string): Promise<void> {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readwrite');
-    tx.objectStore(store).delete(key);
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-  });
+  try {
+    const db = await openDB();
+    return new Promise((resolve) => {
+      const tx = db.transaction(store, 'readwrite');
+      tx.objectStore(store).delete(key);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => resolve();
+    });
+  } catch {
+    // fail-safe
+  }
 }
 
 async function clearStore(store: StoreName): Promise<void> {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(store, 'readwrite');
-    tx.objectStore(store).clear();
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-  });
+  try {
+    const db = await openDB();
+    return new Promise((resolve) => {
+      const tx = db.transaction(store, 'readwrite');
+      tx.objectStore(store).clear();
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => resolve();
+    });
+  } catch {
+    // fail-safe
+  }
 }
 
 // ─── Route cache with version guard ─────────────────────────────────────

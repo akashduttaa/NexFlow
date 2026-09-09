@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Truck, Filter } from 'lucide-react';
+import { Search, Truck } from 'lucide-react';
 import { Card, StatusBadge, Badge, LoadingState } from '@/components/ui';
 import { apiClient } from '@/services/api-client';
 import type { Vehicle } from '@/types';
@@ -34,7 +34,7 @@ export default function Fleet() {
     <div className="space-y-6">
       <div>
         <h1 className="page-title">Fleet Operations</h1>
-        <p className="text-sm text-ink-500 mt-1">Manage vehicles, drivers, routes, and assignments</p>
+        <p className="text-sm text-ink-400 mt-1">Manage vehicles, drivers, routes, and assignments</p>
       </div>
 
       {/* Filters */}
@@ -76,22 +76,22 @@ export default function Fleet() {
             <Card hover className="p-4">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-lg bg-primary-100 flex items-center justify-center">
-                    <Truck className="w-5 h-5 text-primary-600" />
+                  <div className="w-10 h-10 rounded-lg bg-primary-500/10 flex items-center justify-center">
+                    <Truck className="w-5 h-5 text-primary-400" />
                   </div>
                   <div>
-                    <p className="font-semibold text-ink-900">{v.vehicleNo}</p>
-                    <p className="text-xs text-ink-500">{v.type}</p>
+                    <p className="font-semibold text-white">{v.vehicleNo}</p>
+                    <p className="text-xs text-ink-400">{v.type}</p>
                   </div>
                 </div>
                 <StatusBadge status={v.status} />
               </div>
               <div className="space-y-1.5 text-sm">
-                <div className="flex justify-between"><span className="text-ink-500">Driver</span><span className="text-ink-800">{v.driverName ?? '—'}</span></div>
-                <div className="flex justify-between"><span className="text-ink-500">Load</span><span className="text-ink-800">{v.currentLoadKg}/{v.capacityKg} kg</span></div>
-                <div className="flex justify-between"><span className="text-ink-500">ETA</span><span className="text-ink-800">{v.eta ?? '—'}</span></div>
-                <div className="flex justify-between"><span className="text-ink-500">Route</span><span className="text-ink-800">v{v.routeVersion}</span></div>
-                <div className="flex justify-between"><span className="text-ink-500">Connection</span><StatusBadge status={v.connectionStatus} /></div>
+                <div className="flex justify-between"><span className="text-ink-400">Driver</span><span className="text-ink-200">{v.driverName ?? '—'}</span></div>
+                <div className="flex justify-between"><span className="text-ink-400">Load</span><span className="text-ink-200">{v.currentLoadKg}/{v.capacityKg} kg</span></div>
+                <div className="flex justify-between"><span className="text-ink-400">ETA</span><span className="text-ink-200">{v.eta ?? '—'}</span></div>
+                <div className="flex justify-between"><span className="text-ink-400">Route</span><span className="text-ink-200">v{v.routeVersion}</span></div>
+                <div className="flex justify-between"><span className="text-ink-400">Connection</span><StatusBadge status={v.connectionStatus} /></div>
               </div>
             </Card>
           </Link>

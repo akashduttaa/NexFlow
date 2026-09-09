@@ -36,18 +36,18 @@ export default function VehicleDetail() {
 
   return (
     <div className="space-y-6">
-      <Link to="/dashboard/fleet" className="flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700">
+      <Link to="/dashboard/fleet" className="flex items-center gap-1 text-sm text-primary-400 hover:text-primary-300">
         <ArrowLeft className="w-4 h-4" /> Back to Fleet
       </Link>
 
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-lg bg-primary-100 flex items-center justify-center">
-            <Truck className="w-6 h-6 text-primary-600" />
+          <div className="w-12 h-12 rounded-lg bg-primary-500/15 flex items-center justify-center">
+            <Truck className="w-6 h-6 text-primary-400" />
           </div>
           <div>
             <h1 className="page-title">{vehicle.vehicleNo}</h1>
-            <p className="text-sm text-ink-500">{vehicle.type} — {vehicle.id}</p>
+            <p className="text-sm text-ink-400">{vehicle.type} — {vehicle.id}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -77,37 +77,37 @@ export default function VehicleDetail() {
           <h2 className="section-title">Assignments</h2>
           <div className="space-y-3">
             {delivery ? (
-              <Link to={`/dashboard/deliveries/${delivery.id}`} className="block p-3 rounded-lg bg-primary-50 border border-primary-200 hover:bg-primary-100 transition-colors">
+              <Link to={`/dashboard/deliveries/${delivery.id}`} className="block p-3 rounded-lg bg-primary-500/10 border border-primary-500/20 hover:bg-primary-500/15 transition-colors">
                 <div className="flex items-center gap-2 mb-1">
-                  <Package className="w-4 h-4 text-primary-600" />
-                  <span className="text-sm font-medium text-primary-700">Delivery {delivery.id}</span>
+                  <Package className="w-4 h-4 text-primary-400" />
+                  <span className="text-sm font-medium text-primary-300">Delivery {delivery.id}</span>
                 </div>
-                <p className="text-xs text-ink-600">{delivery.destination}</p>
+                <p className="text-xs text-ink-300">{delivery.destination}</p>
                 <div className="flex items-center gap-2 mt-1">
                   <StatusBadge status={delivery.status} />
-                  <span className="text-xs text-ink-500">{delivery.priority}</span>
+                  <span className="text-xs text-ink-400">{delivery.priority}</span>
                 </div>
               </Link>
             ) : <p className="text-sm text-ink-400">No delivery assigned</p>}
 
             {bay ? (
-              <Link to={`/dashboard/bays/${bay.id}`} className="block p-3 rounded-lg bg-accent-50 border border-accent-200 hover:bg-accent-100 transition-colors">
+              <Link to={`/dashboard/bays/${bay.id}`} className="block p-3 rounded-lg bg-accent-500/10 border border-accent-500/20 hover:bg-accent-100 transition-colors">
                 <div className="flex items-center gap-2 mb-1">
-                  <MapPin className="w-4 h-4 text-accent-600" />
-                  <span className="text-sm font-medium text-accent-700">Bay {bay.bayId}</span>
+                  <MapPin className="w-4 h-4 text-accent-400" />
+                  <span className="text-sm font-medium text-accent-300">Bay {bay.bayId}</span>
                 </div>
-                <p className="text-xs text-ink-600">{bay.name}</p>
+                <p className="text-xs text-ink-300">{bay.name}</p>
                 <StatusBadge status={bay.state} />
               </Link>
             ) : <p className="text-sm text-ink-400">No bay assigned</p>}
 
             {route && (
-              <div className="p-3 rounded-lg bg-ink-50 border border-ink-200">
+              <div className="p-3 rounded-lg bg-surface border border-surface-border">
                 <div className="flex items-center gap-2 mb-1">
-                  <Activity className="w-4 h-4 text-ink-600" />
-                  <span className="text-sm font-medium text-ink-700">Route {route.routeId}</span>
+                  <Activity className="w-4 h-4 text-ink-300" />
+                  <span className="text-sm font-medium text-ink-200">Route {route.routeId}</span>
                 </div>
-                <p className="text-xs text-ink-500">Version: v{route.routeVersion} — Duration: {route.estimatedDurationMin} min</p>
+                <p className="text-xs text-ink-400">Version: v{route.routeVersion} — Duration: {route.estimatedDurationMin} min</p>
                 <StatusBadge status={route.status} />
               </div>
             )}
@@ -127,10 +127,10 @@ export default function VehicleDetail() {
 function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="flex items-center gap-2 text-ink-500">
+      <span className="flex items-center gap-2 text-ink-400">
         {icon} {label}
       </span>
-      <span className="text-ink-800 font-medium">{value}</span>
+      <span className="text-ink-100 font-medium">{value}</span>
     </div>
   );
 }

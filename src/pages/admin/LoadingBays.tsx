@@ -31,15 +31,15 @@ export default function LoadingBays() {
     <div className="space-y-6">
       <div>
         <h1 className="page-title">Loading Bay Management</h1>
-        <p className="text-sm text-ink-500 mt-1">Monitor bay availability, reservations, and conflicts</p>
+        <p className="text-sm text-ink-400 mt-1">Monitor bay availability, reservations, and conflicts</p>
       </div>
 
       {/* Summary */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card className="p-4"><p className="kpi-label">Total Bays</p><p className="kpi-value">{bays.length}</p></Card>
-        <Card className="p-4"><p className="kpi-label">Available</p><p className="kpi-value text-accent-600">{availableBays.length}</p></Card>
+        <Card className="p-4"><p className="kpi-label">Available</p><p className="kpi-value text-accent-400">{availableBays.length}</p></Card>
         <Card className="p-4"><p className="kpi-label">Avg Utilization</p><p className="kpi-value">{avgUtilization}%</p></Card>
-        <Card className="p-4"><p className="kpi-label">Conflicts</p><p className="kpi-value text-error-600">{conflicts.length}</p></Card>
+        <Card className="p-4"><p className="kpi-label">Conflicts</p><p className="kpi-value text-error-400">{conflicts.length}</p></Card>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -54,7 +54,7 @@ export default function LoadingBays() {
         {/* Conflicts */}
         <Card className="p-4">
           <div className="flex items-center gap-2 mb-3">
-            <AlertTriangle className="w-5 h-5 text-error-600" />
+            <AlertTriangle className="w-5 h-5 text-error-400" />
             <h3 className="section-title">Bay Conflicts</h3>
           </div>
           {conflicts.length === 0 ? (
@@ -62,13 +62,13 @@ export default function LoadingBays() {
           ) : (
             <div className="space-y-2 max-h-80 overflow-y-auto">
               {conflicts.map(s => (
-                <div key={s.id} className="p-3 rounded-lg bg-error-50 border border-error-200">
+                <div key={s.id} className="p-3 rounded-lg bg-error-500/10 border border-error-500/20">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-error-700">{s.slotId}</span>
+                    <span className="text-sm font-medium text-error-300">{s.slotId}</span>
                     <StatusBadge status={s.status} />
                   </div>
-                  <p className="text-xs text-ink-500 mt-1">Bay: {s.bayId} — {s.startTime}–{s.endTime}</p>
-                  {s.deliveryId && <p className="text-xs text-ink-500">Delivery: {s.deliveryId}</p>}
+                  <p className="text-xs text-ink-400 mt-1">Bay: {s.bayId} — {s.startTime}–{s.endTime}</p>
+                  {s.deliveryId && <p className="text-xs text-ink-400">Delivery: {s.deliveryId}</p>}
                 </div>
               ))}
             </div>
@@ -92,7 +92,7 @@ export default function LoadingBays() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-ink-200 bg-ink-50">
+              <tr className="border-b border-surface-border bg-surface">
                 <th className="table-header">Bay ID</th>
                 <th className="table-header">Name</th>
                 <th className="table-header">Zone</th>
@@ -104,18 +104,18 @@ export default function LoadingBays() {
             </thead>
             <tbody>
               {filtered.map(b => (
-                <tr key={b.id} className="border-b border-ink-100 hover:bg-ink-50">
-                  <td className="table-cell"><Link to={`/dashboard/bays/${b.id}`} className="text-primary-600 hover:text-primary-700 font-medium">{b.bayId}</Link></td>
+                <tr key={b.id} className="border-b border-surface-border hover:bg-surface">
+                  <td className="table-cell"><Link to={`/dashboard/bays/${b.id}`} className="text-primary-400 hover:text-primary-300 font-medium">{b.bayId}</Link></td>
                   <td className="table-cell">{b.name}</td>
                   <td className="table-cell">{b.zone}</td>
                   <td className="table-cell text-xs">{b.compatibility.join(', ')}</td>
                   <td className="table-cell">{b.serviceDurationMin}</td>
                   <td className="table-cell">
                     <div className="flex items-center gap-2">
-                      <div className="w-16 h-2 bg-ink-200 rounded-full overflow-hidden">
+                      <div className="w-16 h-2 bg-surface rounded-full overflow-hidden">
                         <div className={`h-full rounded-full ${b.utilizationPct > 80 ? 'bg-error-500' : b.utilizationPct > 60 ? 'bg-warning-500' : 'bg-accent-500'}`} style={{ width: `${b.utilizationPct}%` }} />
                       </div>
-                      <span className="text-xs text-ink-600">{b.utilizationPct}%</span>
+                      <span className="text-xs text-ink-300">{b.utilizationPct}%</span>
                     </div>
                   </td>
                   <td className="table-cell"><StatusBadge status={b.state} /></td>
@@ -132,7 +132,7 @@ export default function LoadingBays() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-ink-200">
+              <tr className="border-b border-surface-border">
                 <th className="table-header">Slot ID</th>
                 <th className="table-header">Bay</th>
                 <th className="table-header">Delivery</th>
@@ -144,7 +144,7 @@ export default function LoadingBays() {
             </thead>
             <tbody>
               {slots.map(s => (
-                <tr key={s.id} className="border-b border-ink-100 hover:bg-ink-50">
+                <tr key={s.id} className="border-b border-surface-border hover:bg-surface">
                   <td className="table-cell font-medium">{s.slotId}</td>
                   <td className="table-cell">{s.bayId}</td>
                   <td className="table-cell">{s.deliveryId ?? '—'}</td>

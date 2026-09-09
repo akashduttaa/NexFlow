@@ -37,9 +37,9 @@ export default function AuditLog() {
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="page-title">Audit Log</h1>
-          <p className="text-sm text-ink-500 mt-1">Every major operational decision is auditable</p>
+          <p className="text-sm text-ink-400 mt-1">Every major operational decision is auditable</p>
         </div>
-        <Badge variant="demo">DEMO DATA</Badge>
+        <Badge variant="info">LIVE AUDIT TRAIL</Badge>
       </div>
 
       <Card className="p-4">
@@ -53,7 +53,7 @@ export default function AuditLog() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-ink-200 bg-ink-50">
+              <tr className="border-b border-surface-border bg-surface">
                 <th className="table-header">Event ID</th>
                 <th className="table-header">Timestamp</th>
                 <th className="table-header">Event Type</th>
@@ -64,7 +64,7 @@ export default function AuditLog() {
             </thead>
             <tbody>
               {filtered.map(e => (
-                <tr key={e.id} className="border-b border-ink-100 hover:bg-ink-50">
+                <tr key={e.id} className="border-b border-surface-border hover:bg-surface">
                   <td className="table-cell font-medium text-xs">{e.eventId}</td>
                   <td className="table-cell text-xs">{new Date(e.timestamp).toLocaleString('en-IN')}</td>
                   <td className="table-cell"><span className={eventColors[e.eventType] ?? 'badge-neutral'}>{e.eventType}</span></td>

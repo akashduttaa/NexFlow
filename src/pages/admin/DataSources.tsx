@@ -31,7 +31,7 @@ export default function DataSources() {
     <div className="space-y-6">
       <div>
         <h1 className="page-title">Data Sources</h1>
-        <p className="text-sm text-ink-500 mt-1">Provenance and freshness of all data sources</p>
+        <p className="text-sm text-ink-400 mt-1">Provenance and freshness of all data sources</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -39,18 +39,18 @@ export default function DataSources() {
           <Card key={src.id} hover className="p-5">
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-ink-100 flex items-center justify-center text-ink-600">
+                <div className="w-10 h-10 rounded-lg bg-surface-hover flex items-center justify-center text-ink-300">
                   {iconFor(src.name)}
                 </div>
                 <div>
-                  <p className="font-semibold text-ink-900">{src.name}</p>
+                  <p className="font-semibold text-white">{src.name}</p>
                   <ProvenanceBadge type={src.type} />
                 </div>
               </div>
               <StatusBadge status={src.status} />
             </div>
-            <p className="text-sm text-ink-600 mb-3">{src.description}</p>
-            <div className="flex items-center justify-between text-xs text-ink-500">
+            <p className="text-sm text-ink-300 mb-3">{src.description}</p>
+            <div className="flex items-center justify-between text-xs text-ink-400">
               <span>Last refresh: {src.lastRefresh === '—' ? '—' : new Date(src.lastRefresh).toLocaleString('en-IN')}</span>
               <span>Freshness: {src.freshness}</span>
             </div>
@@ -58,10 +58,10 @@ export default function DataSources() {
         ))}
       </div>
 
-      <Card className="p-4 bg-ink-50 border-ink-200">
+      <Card className="p-4 bg-surface border-surface-border">
         <div className="flex items-start gap-2">
-          <Database className="w-4 h-4 text-ink-500 mt-0.5 shrink-0" />
-          <p className="text-xs text-ink-500">
+          <Database className="w-4 h-4 text-ink-400 mt-0.5 shrink-0" />
+          <p className="text-xs text-ink-400">
             NexFlow never hides data provenance. Simulated data is clearly labelled. Live external sources require API keys and authorization.
           </p>
         </div>
