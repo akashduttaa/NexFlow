@@ -40,7 +40,7 @@ npm run dev
 
 ## Demo Mode
 
-This Bolt build uses deterministic simulated data. All operational data is clearly labelled as SIMULATED. External services (PostgreSQL, Redis, OSRM, CP-SAT, XGBoost) are scaffolded with CONNECTOR READY status.
+This build uses deterministic simulated data. All operational data is clearly labelled as SIMULATED. External services (PostgreSQL, Redis, OSRM, CP-SAT, XGBoost) are scaffolded with CONNECTOR READY status.
 
 ## Architecture
 
