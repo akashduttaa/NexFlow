@@ -25,6 +25,7 @@ import {
   FileX,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import type { FuelType } from '@/types';
 import urbanTruckImg from '@/assets/images/urban_truck.jpg';
 import controlCenterImg from '@/assets/images/control_center.jpg';
 import indianFreightBg from '@/assets/images/indian_freight_bg.jpg';
@@ -105,7 +106,7 @@ export default function Login() {
   const [selectedDriverEmail, setSelectedDriverEmail] = useState('driver@nexflow.demo');
 
   // Eco & PUC Certificate State
-  const [fuelType, setFuelType] = useState<'EV' | 'DIESEL'>('EV');
+  const [fuelType, setFuelType] = useState<FuelType>('EV');
   const [pucCertNo, setPucCertNo] = useState('EXEMPT (EV Zero Emission)');
   const [pucConfirmed, setPucConfirmed] = useState(true);
 
@@ -121,7 +122,7 @@ export default function Login() {
     }
   }, [roleParam]);
 
-  const handleFuelTypeChange = (newFuel: 'EV' | 'DIESEL') => {
+  const handleFuelTypeChange = (newFuel: FuelType) => {
     setFuelType(newFuel);
     setError(null);
     if (newFuel === 'EV') {
@@ -590,7 +591,7 @@ export default function Login() {
                             }}
                             className="input bg-surface/90 border-surface-border text-white font-mono text-xs uppercase"
                             placeholder="e.g. WB-PUC-2026-9823"
-                            required={fuelType !== 'EV'}
+                            required
                           />
                           <label className="flex items-center gap-2 cursor-pointer pt-1">
                             <input

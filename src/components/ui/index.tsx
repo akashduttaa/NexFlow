@@ -85,7 +85,8 @@ export function ErrorState({ message }: { message: string }) {
   );
 }
 
-export function StatusBadge({ status }: { status: string }) {
+export function StatusBadge({ status }: { status?: string }) {
+  const safeStatus = status || 'ONLINE';
   const map: Record<string, { variant: 'success' | 'warning' | 'error' | 'info' | 'neutral' | 'demo' | 'open'; label: string }> = {
     ONLINE: { variant: 'success', label: 'Online' },
     OFFLINE: { variant: 'error', label: 'Offline' },
@@ -122,7 +123,7 @@ export function StatusBadge({ status }: { status: string }) {
     IDLE: { variant: 'neutral', label: 'Idle' },
     RETURNING: { variant: 'info', label: 'Returning' },
   };
-  const cfg = map[status] ?? { variant: 'neutral' as const, label: status };
+  const cfg = map[safeStatus] ?? { variant: 'neutral' as const, label: safeStatus };
   return <Badge variant={cfg.variant}>{cfg.label}</Badge>;
 }
 

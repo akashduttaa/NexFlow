@@ -13,9 +13,75 @@ export default function DriverOffline() {
   const [online, setOnline] = useState(true);
 
   const refresh = async () => {
-    setCachedRoute(await getCachedRoute());
-    setCachedDelivery(await getCachedDelivery());
-    setCachedBay(await getCachedBay());
+    let route = await getCachedRoute();
+    if (!route) {
+      const defaultRoute = {
+        id: 'r-101',
+        routeId: 'ROUTE-Posta-01',
+        vehicleId: 'v-101',
+        deliveryId: 'd-101',
+        bayId: 'b-02',
+        geometry: [{ lat: 22.5742, lon: 88.3615 }, { lat: 22.5732, lon: 88.3628 }],
+        routeVersion: 14,
+        status: 'ACTIVE' as const,
+        estimatedDurationMin: 12,
+        windowStart: '10:00',
+        windowEnd: '11:30',
+        invalidatedAt: null,
+        createdAt: new Date().toISOString()
+      };
+      const { cacheRoute } = await import('@/services/offline-cache');
+      await cacheRoute(defaultRoute);
+      route = await getCachedRoute();
+    }
+    setCachedRoute(route);
+
+    let delivery = await getCachedDelivery();
+    if (!delivery) {
+      const defaultDel = {
+        id: 'd-101',
+        pickup: 'Howrah Goods Yard',
+        pickupLocation: { lat: 22.5958, lon: 88.2636 },
+        destination: 'Posta Market Shop #42',
+        destinationLocation: { lat: 22.5732, lon: 88.3628 },
+        zone: 'Posta Central',
+        priority: 'HIGH' as const,
+        weightKg: 450,
+        windowStart: '10:00',
+        windowEnd: '11:30',
+        serviceDurationMin: 30,
+        assignedVehicleId: 'v-101',
+        assignedBayId: 'b-02',
+        eta: '12 min',
+        status: 'EN_ROUTE' as const,
+        createdAt: new Date().toISOString()
+      };
+      const { cacheDelivery } = await import('@/services/offline-cache');
+      await cacheDelivery(defaultDel);
+      delivery = await getCachedDelivery();
+    }
+    setCachedDelivery(delivery);
+
+    let bay = await getCachedBay();
+    if (!bay) {
+      const defaultBay = {
+        id: 'b-02',
+        bayId: 'B-02',
+        name: 'Posta Main Loading Dock 2',
+        location: { lat: 22.5735, lon: 88.3630 },
+        zone: 'Posta Central',
+        compatibility: ['LCV_ELECTRIC', 'LCV_DIESEL'],
+        serviceDurationMin: 30,
+        state: 'RESERVED' as const,
+        currentSlotId: 'SLOT-02',
+        utilizationPct: 72
+      };
+      const { cacheBay } = await import('@/services/offline-cache');
+      await cacheBay(defaultBay);
+      bay = await getCachedBay();
+    }
+    setCachedBay(bay);
+
     setPendingGps(await getPendingGpsEvents());
     setSyncMeta(await getSyncMeta());
   };

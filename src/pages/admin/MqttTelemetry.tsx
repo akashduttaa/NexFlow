@@ -91,7 +91,7 @@ export default function MqttTelemetry() {
       <Card className="p-5">
         <h2 className="section-title mb-3 flex items-center gap-2">
           <Layers className="w-5 h-5 text-primary-400" />
-          Active MQTT Topic Subscriptions ({status?.activeTopics.length ?? 4})
+          Active MQTT Topic Subscriptions ({status?.activeTopics?.length ?? 4})
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <div className="p-3 rounded-lg border border-surface-border bg-surface/50">

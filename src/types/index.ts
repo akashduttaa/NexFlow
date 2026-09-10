@@ -97,6 +97,8 @@ export interface Vehicle {
   routeVersion: number;
   lastHeartbeat: string;
   connectionStatus: ConnectionStatus;
+}
+
 export type FuelType = 'EV' | 'DIESEL' | 'PETROL' | 'CNG';
 
 export interface Driver {

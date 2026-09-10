@@ -19,7 +19,7 @@ import { fetchLiveKolkataWeather } from '@/services/live-weather';
 import { xgboostTrainer } from '@/services/xgboost-trainer';
 
 
-async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 1200): Promise<Response> {
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 3000): Promise<Response> {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeoutMs);
   try {

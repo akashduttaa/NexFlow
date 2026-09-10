@@ -52,7 +52,7 @@ export default function BayDetail() {
           <div className="space-y-3 text-sm">
             <Row icon={<MapPin className="w-4 h-4" />} label="Location" value={`${bay.location.lat.toFixed(4)}, ${bay.location.lon.toFixed(4)}`} />
             <Row icon={<MapPin className="w-4 h-4" />} label="Zone" value={bay.zone} />
-            <Row icon={<Activity className="w-4 h-4" />} label="Compatibility" value={bay.compatibility.join(', ')} />
+            <Row icon={<Activity className="w-4 h-4" />} label="Compatibility" value={Array.isArray(bay.compatibility) ? bay.compatibility.join(', ') : (bay as any).vehicleTypeAllowed || 'ANY'} />
             <Row icon={<Clock className="w-4 h-4" />} label="Service Duration" value={`${bay.serviceDurationMin} min`} />
             <Row icon={<Activity className="w-4 h-4" />} label="Utilization" value={`${bay.utilizationPct}%`} />
             <Row icon={<Activity className="w-4 h-4" />} label="Current Slot" value={bay.currentSlotId ?? 'None'} />

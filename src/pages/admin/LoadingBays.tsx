@@ -108,7 +108,7 @@ export default function LoadingBays() {
                   <td className="table-cell"><Link to={`/dashboard/bays/${b.id}`} className="text-primary-400 hover:text-primary-300 font-medium">{b.bayId}</Link></td>
                   <td className="table-cell">{b.name}</td>
                   <td className="table-cell">{b.zone}</td>
-                  <td className="table-cell text-xs">{b.compatibility.join(', ')}</td>
+                  <td className="table-cell text-xs">{Array.isArray(b.compatibility) ? b.compatibility.join(', ') : (b as any).vehicleTypeAllowed || 'ANY'}</td>
                   <td className="table-cell">{b.serviceDurationMin}</td>
                   <td className="table-cell">
                     <div className="flex items-center gap-2">

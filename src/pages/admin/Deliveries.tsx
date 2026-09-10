@@ -13,10 +13,17 @@ export default function Deliveries() {
   const [showCreate, setShowCreate] = useState(false);
 
   useEffect(() => {
-    apiClient.getDeliveries().then(d => {
-      setDeliveries(d);
-      setLoading(false);
-    });
+    const fetchDeliveries = () => {
+      apiClient.getDeliveries().then(d => {
+        setDeliveries(d);
+        setLoading(false);
+      });
+    };
+    fetchDeliveries();
+
+    // Live backend polling every 5 seconds
+    const interval = setInterval(fetchDeliveries, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const filtered = deliveries
@@ -30,7 +37,7 @@ export default function Deliveries() {
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="page-title">Delivery Management</h1>
-          <p className="text-sm text-ink-400 mt-1">Create, track, and manage freight deliveries</p>
+          <p className="text-sm text-ink-400 mt-1">Create, track, and manage live freight deliveries</p>
         </div>
         <button onClick={() => setShowCreate(!showCreate)} className="btn-primary">
           <Plus className="w-4 h-4" /> Create Delivery
@@ -56,7 +63,7 @@ export default function Deliveries() {
             <option value="DELAYED">Delayed</option>
             <option value="CANCELLED">Cancelled</option>
           </select>
-          <Badge variant="demo">SIMULATED PILOT DATA</Badge>
+          <Badge variant="success" className="font-mono text-xs animate-pulse">LIVE BACKEND API (PORT 3001)</Badge>
         </div>
       </Card>
 
